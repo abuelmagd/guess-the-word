@@ -6,13 +6,47 @@
 /*****************************************************************************/
 #include "gamemanager.h"
 
-
-GameManager::GameManager()
+GameManager::GameManager(QObject *rootObject)
 {
+
+    theWordQmlObject = rootObject->findChild<QObject*>("TheWord");
+
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
+    QObject::connect(window, SIGNAL(newGameButtonClick()), this, SLOT(newGame()));
+    QObject::connect(window, SIGNAL(newLetterGuess(QString)), this, SLOT(newGuess(QString)));
     dictionairy = RandomWord(":/txt/dict.txt");
+    newGame();
 }
 
 void GameManager::newGame()
 {
+    for(int i=0; i<26; i++)
+        lettersRemaining.insert(QChar('a'+i));
+    lettersTriedAndWrong.clear();
     theWord = dictionairy.getRandomWord();
+    theGuess.clear();
+    for(int i=0; i<theWord.length();i++)
+        theGuess.append('_');
+    theWordQmlObject->setProperty("text", theGuess);
+}
+
+void GameManager::newGuess(QString K)
+{
+    QChar guessLetter = K[0];
+    if(lettersRemaining.contains(guessLetter))
+    {
+        bool notFound = true;
+        lettersRemaining.remove(guessLetter);
+        for(int i=0; i<theWord.length();i++)
+        {
+            if(theWord.at(i) == guessLetter)
+            {
+                notFound = false;
+                theGuess[i] = guessLetter;
+            }
+        }
+        theWordQmlObject->setProperty("text", theGuess);
+        if(notFound) lettersTriedAndWrong.append(guessLetter);
+    }
+
 }

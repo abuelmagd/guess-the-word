@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
-import QtQuick.VirtualKeyboard 2.4
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Shapes 1.12
@@ -12,16 +11,21 @@ Window {
     visible: true
     title: qsTr("Guess The Word")
     signal newGameButtonClick()
+    signal newLetterGuess(string k)
     ColumnLayout {
         id: layout
         width: parent.width
         height: parent.height
         anchors.centerIn: parent
+        Keys.onPressed: {
+            newLetterGuess(event.text);
+            event.accepted = true;
+        }
         Row {
             Layout.alignment: "AlignHCenter"
             Label {
                 id: label
-                objectName: "label"
+                objectName: "TheWord"
                 //text: This label is for debugging and text is set from C++ side
                 Layout.alignment: "AlignHCenter"
             }
@@ -31,6 +35,8 @@ Window {
             Button {
                 text: "New Game"
                 onClicked: newGameButtonClick()
+                focus: true
+                Keys.forwardTo: layout
             }
         }
 
@@ -49,43 +55,6 @@ Window {
                         x: 100
                         y: 100
                     }
-                    PathLine {
-                        x: 20
-                        y: 100
-                    }
-                    PathLine {
-                        x: 20
-                        y: 20
-                    }
-                }
-            }
-        }
-    }
-
-    InputPanel {
-        id: inputPanel
-        z: 99
-        x: 0
-        y: window.height
-        width: window.width
-
-        states: State {
-            name: "visible"
-            when: inputPanel.active
-            PropertyChanges {
-                target: inputPanel
-                y: window.height - inputPanel.height
-            }
-        }
-        transitions: Transition {
-            from: ""
-            to: "visible"
-            reversible: true
-            ParallelAnimation {
-                NumberAnimation {
-                    properties: "y"
-                    duration: 250
-                    easing.type: Easing.InOutQuad
                 }
             }
         }

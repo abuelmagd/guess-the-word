@@ -20,19 +20,12 @@ int main(int argc, char *argv[])
 
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
 
-    // Step 1: get access to the root object
-    QObject *rootObject = engine.rootObjects().first();
-    QObject *qmlObject = rootObject->findChild<QObject*>("label");
+    // get access to the root object
 
-    // Step 2: set or get the desired property value for any qml object
-    qmlObject->setProperty("text", "Hello from C++!");
-    //qDebug() << qmlObject->property("visible");
+    QObject *rootObject = engine.rootObjects().first();
 
     // Start our Game Engine
-    GameManager *gameEngine = new GameManager();
-    gameEngine->newGame();
-    // Step 3: Connect QML signals to C++ slots
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
-    QObject::connect(window, SIGNAL(newGameButtonClick()), gameEngine, SLOT(newGame()));
+    GameManager *gameEngine = new GameManager(rootObject);
+
     return app.exec();
 }

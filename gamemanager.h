@@ -8,20 +8,26 @@
 #define GAMEMANAGER_H
 
 #include <QObject>
+#include <QSet>
+#include <QQuickWindow>
 #include "randomword.h"
 
 class GameManager : public QObject
 {
     Q_OBJECT
 public:
-    GameManager();
+    GameManager(QObject *rootObject);
 
 public slots:
     void newGame();
-
+    void newGuess(QString);
 private:
     RandomWord dictionairy;
     QString theWord;
+    QString theGuess;
+    QList<QChar> lettersTriedAndWrong;
+    QSet<QChar> lettersRemaining;
+    QObject *theWordQmlObject;
 };
 
 #endif // GAMEMANAGER_H
