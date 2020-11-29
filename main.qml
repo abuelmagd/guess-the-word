@@ -6,8 +6,8 @@ import QtQuick.Shapes 1.12
 
 Window {
     id: window
-    width: 640
-    height: 480
+    width: 800
+    height: 600
     visible: true
     title: qsTr("Guess The Word")
     signal newGameButtonClick()
@@ -26,10 +26,20 @@ Window {
             Label {
                 id: label
                 objectName: "TheWord"
-                //text: This label is for debugging and text is set from C++ side
                 Layout.alignment: "AlignHCenter"
+                font.pixelSize: 64
             }
         }
+        Row {
+            Layout.alignment: "AlignHCenter"
+            Label {
+                id: wrongGuesses
+                objectName: "WrongGuesses"
+                Layout.alignment: "AlignHCenter"
+                font.pixelSize: 64
+            }
+        }
+
         Row {
             Layout.alignment: "AlignHCenter"
             Button {
@@ -40,23 +50,23 @@ Window {
             }
         }
 
-        Row {
-            Layout.alignment: "AlignHCenter"
-            Shape {
-                id: hangedMan
-                Layout.alignment: "AlignHCenter"
-                ShapePath {
-                    strokeWidth: 5
-                    strokeColor: "black"
-                    startX: 20
-                    startY: layout.height
-                    PathLine {
-                        id: firstLine
-                        x: 100
-                        y: 100
-                    }
-                }
-            }
-        }
+//        Row {
+//            Layout.alignment: "AlignHCenter"
+//            Shape {
+//                id: hangedMan
+//                Layout.alignment: "AlignHCenter"
+//                ShapePath {
+//                    strokeWidth: 5
+//                    strokeColor: "black"
+//                    startX: 20
+//                    startY: layout.height
+////                    PathLine {
+////                        id: firstLine
+////                        x: 100
+////                        y: 100
+////                    }
+//                }
+//            }
+//        }
     }
 }

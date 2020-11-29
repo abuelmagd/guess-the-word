@@ -10,7 +10,7 @@ GameManager::GameManager(QObject *rootObject)
 {
 
     theWordQmlObject = rootObject->findChild<QObject*>("TheWord");
-
+    wrongGuessesQmlObject = rootObject->findChild<QObject*>("WrongGuesses");
     QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
     QObject::connect(window, SIGNAL(newGameButtonClick()), this, SLOT(newGame()));
     QObject::connect(window, SIGNAL(newLetterGuess(QString)), this, SLOT(newGuess(QString)));
@@ -26,8 +26,9 @@ void GameManager::newGame()
     theWord = dictionairy.getRandomWord();
     theGuess.clear();
     for(int i=0; i<theWord.length();i++)
-        theGuess.append('_');
+        theGuess.append('-');
     theWordQmlObject->setProperty("text", theGuess);
+    setupWrongGuesses();
 }
 
 void GameManager::newGuess(QString K)
@@ -47,6 +48,19 @@ void GameManager::newGuess(QString K)
         }
         theWordQmlObject->setProperty("text", theGuess);
         if(notFound) lettersTriedAndWrong.append(guessLetter);
+        setupWrongGuesses();
     }
+
+}
+
+void GameManager::setupWrongGuesses()
+{
+    QString wrongTries;
+    for(int i=0; i<lettersTriedAndWrong.length();i++)
+    {
+        wrongTries.append(lettersTriedAndWrong.at(i));
+        wrongTries.append(' ');
+    }
+    wrongGuessesQmlObject->setProperty("text", wrongTries);
 
 }

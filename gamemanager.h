@@ -28,6 +28,8 @@ private:
     QList<QChar> lettersTriedAndWrong;
     QSet<QChar> lettersRemaining;
     QObject *theWordQmlObject;
+    QObject *wrongGuessesQmlObject;
+    void setupWrongGuesses();
 };
 
 #endif // GAMEMANAGER_H
