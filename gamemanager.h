@@ -12,6 +12,15 @@
 #include <QQuickWindow>
 #include "randomword.h"
 
+enum enuState
+{
+    PLAYING,
+    WON,
+    LOST
+};
+
+#define TOO_MANY_WRONG_LETTERS 10
+
 class GameManager : public QObject
 {
     Q_OBJECT
@@ -29,7 +38,10 @@ private:
     QSet<QChar> lettersRemaining;
     QObject *theWordQmlObject;
     QObject *wrongGuessesQmlObject;
+    enuState gameState;
     void setupWrongGuesses();
+    void updateGameState();
+    void updateUI();
 };
 
 #endif // GAMEMANAGER_H

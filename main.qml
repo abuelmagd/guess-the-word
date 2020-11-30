@@ -36,7 +36,18 @@ Window {
                 id: wrongGuesses
                 objectName: "WrongGuesses"
                 Layout.alignment: "AlignHCenter"
-                font.pixelSize: 64
+                font.pixelSize: 48
+                color: "red"
+                states: [
+                        State {
+                            name: "lost"
+                            PropertyChanges { target: wrongGuesses; text: "Oh Dear!" }
+                        },
+                    State {
+                        name: "won"
+                        PropertyChanges { target: wrongGuesses; text: "Bravo!" ; color: "green"}
+                    }
+                    ]
             }
         }
 

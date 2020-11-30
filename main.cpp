@@ -27,5 +27,6 @@ int main(int argc, char *argv[])
     // Start our Game Engine
     GameManager *gameEngine = new GameManager(rootObject);
 
+    app.setWindowIcon(QIcon(":/img/icon.png"));
     return app.exec();
 }
